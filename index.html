@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Choice Entry</title>
+</head>
+<body>
+  <h2>Enter Student Details</h2>
+  <form id="studentForm">
+    <label>Name:</label>
+    <input type="text" id="name" required><br><br>
+
+    <label>Choice:</label>
+    <input type="text" id="choice" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <script>
+    const scriptURL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE";
+
+    const form = document.getElementById("studentForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("name", document.getElementById("name").value);
+      formData.append("choice", document.getElementById("choice").value);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          msg.textContent = "Submitted Successfully ✅";
+          form.reset();
+          setTimeout(() => msg.textContent = "", 3000);
+        })
+        .catch(error => {
+          console.error("Error!", error.message);
+          msg.textContent = "Submit Failed ❌";
+        });
+    });
+  </script>
+</body>
+</html>
